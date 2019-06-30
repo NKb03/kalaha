@@ -6,6 +6,6 @@ edition = "2018"
 
 [dependencies]
 
-[lib]
+[main]
 name = "kalaha"
-path = "kalaha.rs"
+path = "src/main.rs"
