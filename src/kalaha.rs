@@ -21,7 +21,7 @@ fn other_player(p: u8) -> u8 {
 
 impl Kalaha {
     pub fn new() -> Kalaha {
-        let mut buckets = [3; 14];
+        let mut buckets = [4; 14];
         buckets[6] = 0;
         buckets[13] = 0;
         Kalaha { buckets }
@@ -123,9 +123,36 @@ impl Kalaha {
         }
     }
 
-    pub fn to_string(&self) -> String {
-        return format!("{:?}", self.buckets);
+    pub fn to_string(&self, perspective: u8) -> String {
+        let mut res = String::new();
+        res.push_str("   ");
+        let opponent_range = if perspective == PLAYER_ONE { 7..=12 } else { 0..=5 };
+        let my_range = if perspective == PLAYER_ONE { 0..=5 } else { 7..=12 };
+        for i in opponent_range {
+            push_bucket(&mut res, self.get_bucket(i));
+        }
+        newl(&mut res);
+        let (my_kalaha, other_kalaha) = Kalaha::kalahas(perspective);
+        push_bucket(&mut res, self.get_bucket(other_kalaha));
+        res.push_str("                  ");
+        push_bucket(&mut res, self.get_bucket(my_kalaha));
+        newl(&mut res);
+        res.push_str("   ");
+        for i in my_range {
+            push_bucket(&mut res, self.get_bucket(i));
+        }
+        return res;
     }
+}
+
+fn push_bucket(buf: &mut String, count: u8) {
+    buf.push('[');
+    buf.push_str(count.to_string().as_str());
+    buf.push(']');
+}
+
+fn newl(buf: &mut String) {
+    buf.push_str("\r\n");
 }
 
 #[cfg(test)]

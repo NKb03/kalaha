@@ -60,20 +60,22 @@ fn greater(x: i8, y: i8) -> bool {
 }
 
 fn lower(x: i8, y: i8) -> bool {
-    y < x
+    x < y
 }
 
 pub fn best_move(kalaha: Kalaha, player: u8, depth: u8) -> usize {
     let mut best = None;
-    let mut best_eval = 0;
+    let mut best_eval;
     let range: RangeInclusive<usize>;
     let comparator: fn(i8, i8) -> bool;
     if player == PLAYER_ONE {
         range = 0..=5;
         comparator = greater;
+        best_eval = MIN;
     } else {
         range = 7..=12;
         comparator = lower;
+        best_eval = MAX;
     }
     for mve in range {
         let eval = match kalaha.make_move(mve, player) {
