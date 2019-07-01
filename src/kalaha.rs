@@ -8,22 +8,20 @@ pub enum AfterMove {
         kalaha: Kalaha,
         next_move: u8,
     },
-    Winner {
-        winner: u8
-    }
+    Winner(u8)
 }
 
 pub const PLAYER_ONE: u8 = 0;
 pub const PLAYER_TWO: u8 = 1;
 pub const REMIS: u8 = 2;
 
-pub fn other_player(p: u8) -> u8 {
+fn other_player(p: u8) -> u8 {
     1 - p
 }
 
 impl Kalaha {
     pub fn new() -> Kalaha {
-        let mut buckets = [4; 14];
+        let mut buckets = [3; 14];
         buckets[6] = 0;
         buckets[13] = 0;
         Kalaha { buckets }
@@ -115,14 +113,18 @@ impl Kalaha {
         let my_result = copy.get_bucket(my_kalaha);
         let other_result = copy.get_bucket(other_kalaha);
         if my_result > 24 {
-            AfterMove::Winner { winner: player }
+            AfterMove::Winner(player)
         } else if other_result > 24 {
-            AfterMove::Winner { winner: other_player(player) }
+            AfterMove::Winner(other_player(player))
         } else if other_result == 24 && my_result == 24 {
-            AfterMove::Winner { winner: REMIS }
+            AfterMove::Winner(REMIS)
         } else {
             AfterMove::Regular { kalaha: copy, next_move }
         }
+    }
+
+    pub fn to_string(&self) -> String {
+        return format!("{:?}", self.buckets);
     }
 }
 
