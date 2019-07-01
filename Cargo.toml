@@ -5,7 +5,3 @@ authors = ["Nikolaus Knop <niko.knop003@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-
-[main]
-name = "kalaha"
-path = "src/main.rs"
